@@ -61,6 +61,7 @@ PRArchetype >> project: aPRProject [
 PRArchetype >> validateExists [
 
 	self directory exists ifFalse: [
+		(ZnCharacterWriteStream on: Stdio stdout encoding: ZnCharacterEncoder utf8) nextPutAll: '** image workingDirectory: ', FileLocator workingDirectory fullName.
 		self error: 'Archetype ', name, ' does not exist'
 	].
 ]
