@@ -69,7 +69,10 @@ jobs:
           cp -R archetypes ${SMALLTALK_CI_BUILD}/
           echo "ls: " `ls -a ${SMALLTALK_CI_BUILD}`
           smalltalkci -s  ${{ steps.smalltalkci.outputs.smalltalk-image }} .smalltalk.Integration.App.ston
-      - name: DEBUG
-        shell: bash
-        timeout-minutes: 15
-        run: tree ${SMALLTALK_CI_BUILD}
+      - uses: actions/upload-artifact@v3
+        if: matrix.platform == 'ubuntu-latest'
+        with:
+          name: Pillar image
+          path: |
+            ${SMALLTALK_CI_CHANGES}
+            ${SMALLTALK_CI_IMAGE}
