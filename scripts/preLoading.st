@@ -1,1 +1,1 @@
-Smalltalk inform: 'image working directory: ', FileLocator workingDirectory fullName
+(ZnCharacterWriteStream on: Stdio stdout encoding: ZnCharacterEncoder utf8) nextPutAll: FileLocator workingDirectory fullName
