@@ -25,11 +25,13 @@ jobs:
         shell: bash
         timeout-minutes: 15
         run: |
+          set -x
           echo "SMALLTALKCIBUILD: " ${SMALLTALK_CI_BUILD}
           echo "PWD: " `pwd`
-          echo "ls: " `ls -Ra`
+          echo "ls: " `ls -a`
+          echo "ls: " `ls -a ${SMALLTALK_CI_BUILD}`
           cp -R archetypes ${SMALLTALK_CI_BUILD}/
-          echo "ls: " `ls -Ra ${SMALLTALK_CI_BUILD}`
+          echo "ls: " `ls -a ${SMALLTALK_CI_BUILD}`
           smalltalkci -s  ${{ steps.smalltalkci.outputs.smalltalk-image }} .smalltalk.Integration.App.ston
       - name: DEBUG
         shell: bash
