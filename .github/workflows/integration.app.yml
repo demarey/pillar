@@ -79,5 +79,5 @@ jobs:
         with:
           name: Pillar image
           path: |
-            ${SMALLTALK_CI_CHANGES}
-            ${SMALLTALK_CI_IMAGE}
+            ${{ env.SMALLTALK_CI_CHANGES }}
+            ${{ env.SMALLTALK_CI_IMAGE }}
