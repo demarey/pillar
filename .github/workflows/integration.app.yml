@@ -29,6 +29,7 @@ jobs:
           echo "SMALLTALKCIBUILD: " ${SMALLTALK_CI_BUILD}
           echo "PWD: " `pwd`
           echo "ls: " `ls -a`
+          mkdir -p ${SMALLTALK_CI_BUILD}/
           echo "ls: " `ls -a ${SMALLTALK_CI_BUILD}`
           cp -R archetypes ${SMALLTALK_CI_BUILD}/
           echo "ls: " `ls -a ${SMALLTALK_CI_BUILD}`
