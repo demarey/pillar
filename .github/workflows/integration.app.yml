@@ -77,7 +77,7 @@ jobs:
           ls -l ${SMALLTALK_CI_CHANGES}
       - name: prepare upload
         run: |
-          wget -O - get.pharo.org/64/${{ env.PHARO_VERSION }}+vm | bash
+          wget -O - get.pharo.org/64/${{ env.PHARO_VERSION }}0+vm | bash
           ./pharo Pharo.image metacello install file://${{ github.workspace }} BaselineOfPillarApp
           mv ${{ env.SMALLTALK_CI_CHANGES }} Pillar.changes
           mv ${{ env.SMALLTALK_CI_IMAGE }} Pillar.image
