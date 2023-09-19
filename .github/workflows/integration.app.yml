@@ -74,10 +74,15 @@ jobs:
           ls -l ${SMALLTALK_CI_BUILD}
           ls -l  ${SMALLTALK_CI_IMAGE}
           ls -l ${SMALLTALK_CI_CHANGES}
+      - name: prepare upload
+        run: |
+          mv ${{ env.SMALLTALK_CI_CHANGES }} Pillar.changes
+          mv ${{ env.SMALLTALK_CI_IMAGE }} Pillar.image
       - uses: actions/upload-artifact@v3
         if: matrix.platform == 'ubuntu-latest'
         with:
           name: Pillar image
           path: |
-            ${{ env.SMALLTALK_CI_CHANGES }}
-            ${{ env.SMALLTALK_CI_IMAGE }}
+            Pillar.image
+            Pillar.changes
+            ${SMALLTALK_CI_BUILD}/*.sources
