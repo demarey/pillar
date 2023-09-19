@@ -78,7 +78,7 @@ jobs:
       - name: prepare upload
         run: |
           wget --quiet -O - get.pharo.org/64/${{ env.PHARO_VERSION }} | bash
-          ./pharo Pharo.image metacello install file://${{ GITHUB_WORKSPACE }} BaselineOfPillarApp
+          ./pharo Pharo.image metacello install file://${{ github.workspace }} BaselineOfPillarApp
           mv ${{ env.SMALLTALK_CI_CHANGES }} Pillar.changes
           mv ${{ env.SMALLTALK_CI_IMAGE }} Pillar.image
       - uses: actions/upload-artifact@v3
