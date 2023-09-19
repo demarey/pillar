@@ -2,6 +2,7 @@ name: integration.app
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PHARO_VERSION: 11
 
 # Controls when the action will run. 
 on:
@@ -20,7 +21,7 @@ jobs:
       - uses: hpi-swa/setup-smalltalkCI@v1
         id: smalltalkci
         with:
-          smalltalk-image: Pharo64-11
+          smalltalk-image: Pharo64-${{ PHARO_VERSION }}
       - name: Setup TeX Live
         uses: teatimeguest/setup-texlive-action@v2
         with:
@@ -76,6 +77,8 @@ jobs:
           ls -l ${SMALLTALK_CI_CHANGES}
       - name: prepare upload
         run: |
+          wget --quiet -O - get.pharo.org/64/$PHARO_VERSION | bash
+          ./pharo Pharo.image metacello install file://${{ GITHUB_WORKSPACE }} BaselineOfPillarApp
           mv ${{ env.SMALLTALK_CI_CHANGES }} Pillar.changes
           mv ${{ env.SMALLTALK_CI_IMAGE }} Pillar.image
       - uses: actions/upload-artifact@v3
@@ -85,4 +88,4 @@ jobs:
           path: |
             Pillar.image
             Pillar.changes
-            ${SMALLTALK_CI_BUILD}/*.sources
+            *.sources
