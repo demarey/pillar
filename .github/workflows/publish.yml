@@ -1,4 +1,4 @@
-name: integration.app
+name: publication
 
 env:
   PHARO_VERSION: 11
