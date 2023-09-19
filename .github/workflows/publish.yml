@@ -1,0 +1,31 @@
+name: integration.app
+
+env:
+  PHARO_VERSION: 11
+
+# Controls when the action will run. 
+on:
+  workflow_dispatch:
+  push:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: prepare upload
+        run: |
+          wget -O - get.pharo.org/64/${{ env.PHARO_VERSION }}0+vm | bash
+          ./pharo Pharo.image eval --save "Metacello new repository: 'gitlocal://./src'; baseline: 'PillarApp'; load"
+          mv Pharo.changes Pillar.changes
+          mv Pharo.image Pillar.image
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Pillar image
+          path: |
+            Pillar.image
+            Pillar.changes
+            *.sources
+ 
