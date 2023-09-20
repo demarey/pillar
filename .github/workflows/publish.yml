@@ -19,7 +19,7 @@ jobs:
         run: |
           wget -O - get.pharo.org/64/${{ env.PHARO_VERSION }}0+vm | bash
           ./pharo Pharo.image eval --save "Metacello new repository: 'gitlocal://./src'; baseline: 'PillarApp'; load"
-          target_dir = public/download
+          target_dir=public/download
           mkdir -p $target_dir
           mv Pharo.changes $target_dir/Pillar.changes
           mv Pharo.image $target_dir/Pillar.image
