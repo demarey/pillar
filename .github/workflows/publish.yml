@@ -19,13 +19,18 @@ jobs:
         run: |
           wget -O - get.pharo.org/64/${{ env.PHARO_VERSION }}0+vm | bash
           ./pharo Pharo.image eval --save "Metacello new repository: 'gitlocal://./src'; baseline: 'PillarApp'; load"
-          mv Pharo.changes Pillar.changes
-          mv Pharo.image Pillar.image
+          target_dir = public/download
+          mkdir -p $target_dir
+          mv Pharo.changes $target_dir/Pillar.changes
+          mv Pharo.image $target_dir/Pillar.image
+          mv *.sources  $target_dir/
       - uses: actions/upload-artifact@v3
         with:
           name: Pillar image
-          path: |
-            Pillar.image
-            Pillar.changes
-            *.sources
- 
+          path: public/*
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
