@@ -28,6 +28,8 @@ RUN git clone https://github.com/pillar-markup/pillar.git -b v10.4.1
 RUN /opt/pillar/scripts/build.sh
 
 # Install TeXLive using Pillar CI scripts
+RUN ls -R /opt/pillar
+RUN ls -R /opt/build/pillar
 RUN /opt/pillar/_support/latex/sbabook/ci/install-texlive
 
 # Install TeXLive dependencies
