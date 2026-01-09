@@ -1,0 +1,54 @@
+############################
+# Stage 1 — Builder
+############################
+FROM ubuntu:22.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TEXLIVE_RELEASE=2023
+ENV PATH="/root/texlive/bin/x86_64-linux:/opt/pillar/build:${PATH}"
+
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    perl \
+    xz-utils \
+    make \
+    build-essential \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+
+# Clone Pillar
+RUN git clone https://github.com/pillar-markup/pillar.git -b v10.4.1
+
+# Build Pillar
+RUN /opt/pillar/scripts/build.sh
+
+# Install TeXLive using Pillar CI scripts
+RUN /opt/pillar/_support/latex/sbabook/ci/install-texlive
+
+# Install TeXLive dependencies
+RUN xargs tlmgr install < /opt/pillar/_support/latex/sbabook/texlive.deps \
+ && xargs tlmgr install < /opt/pillar/_support/latex/texlive.deps \
+ && tlmgr install bibtex
+
+############################
+# Stage 2 — Runtime (slim)
+############################
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/root/texlive/bin/x86_64-linux:/opt/pillar/build:${PATH}"
+
+# Runtime dependencies only
+RUN apt-get update && apt-get install -y \
+    perl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy only what is strictly needed
+COPY --from=builder /root/texlive /root/texlive
+COPY --from=builder /opt/pillar /opt/pillar
+
+WORKDIR /workspace

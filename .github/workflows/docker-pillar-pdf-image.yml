@@ -1,0 +1,33 @@
+name: Build & Publish Pillar PDF Image
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository (for Dockerfile)
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile.pillar-pdf
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/pillar-pdf:latest
+            ghcr.io/${{ github.repository }}/pillar-pdf:v10.4.1
