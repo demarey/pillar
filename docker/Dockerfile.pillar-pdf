@@ -28,6 +28,7 @@ RUN git clone https://github.com/pillar-markup/pillar.git -b v10.4.1
 
 # Build Pillar
 RUN /opt/pillar/scripts/build.sh
+RUN ls -R /opt/build
 
 # Install TeXLive for Book On Demand template
 RUN $PILLAR_TEMPLATE_PATH/support/latex/sbabook/ci/install-texlive
